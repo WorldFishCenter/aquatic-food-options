@@ -1,0 +1,170 @@
+/* app/globals.css
+   The colours, fonts and basic look from the Figma design.
+   Other files use these names, so a colour only needs changing here. */
+
+:root {
+  --bg: #faf6ef;       /* warm off-white page background */
+  --card: #fffdf9;     /* card background */
+  --ink: #2b2a27;      /* main text */
+  --muted: #625d54;    /* quieter text */
+  --line: #e6dcc8;     /* thin borders */
+  --ocean: #14425a;    /* headlines */
+  --teal: #2f7f7b;     /* links and Aquaculture */
+  --kelp: #587a49;     /* Fisheries */
+  --terracotta: #b4573c; /* All sectors */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+/* Headlines use the serif font in the deep ocean colour */
+h1, h2, h3 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 600;
+  color: var(--ocean);
+  margin: 0;
+}
+
+/* ---- Page layout ---- */
+.wrap { max-width: 1400px; margin: 0 auto; padding: 36px 28px 64px; }
+.wrap h1 { font-size: clamp(30px, 4vw, 44px); line-height: 1.1; }
+.lede { color: var(--muted); margin: 8px 0 28px; max-width: 60ch; }
+
+/* The grid: as many 300px+ columns as fit, so it adapts to the screen */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; align-items: start; }
+
+/* ---- Card ---- */
+.card {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(60, 40, 10, 0.07);
+}
+.card-expanded { border-color: var(--c); box-shadow: 0 7px 22px rgba(60, 40, 10, 0.13); }
+.card-photo { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; display: block; }
+.card-photo-empty { background: var(--line); }
+.card-body { display: flex; flex-direction: column; gap: 12px; padding: 18px 22px 16px; flex: 1; }
+.card h3 { font-size: 20px; line-height: 1.25; }
+.short { margin: 0; color: var(--muted); font-size: 13px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.short-expanded { display: block; overflow: visible; }
+
+/* Sector label */
+.sector { display: flex; align-items: center; gap: 7px; color: var(--c); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.sector-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* Hazard tags */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 999px; }
+.tag-heat    { background: #f6e1d8; color: #9a4a33; }
+.tag-drought { background: #f3e3be; color: #7a5a12; }
+.tag-multi   { background: #efe6d2; color: #6b5a34; }
+.tag-salt    { background: #dceeec; color: #2d6b67; }
+.tag-water   { background: #d9e4ea; color: #14425a; }
+.tag-more    { background: var(--line); color: var(--muted); }
+
+/* Bottom row */
+.card-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--line); padding-top: 12px; font-size: 13px; }
+.card-foot small { display: block; color: var(--muted); font-size: 11px; }
+.more { color: var(--teal); font-weight: 500; }
+
+/* ---- Card: clickable ---- */
+.card { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(60, 40, 10, 0.12); }
+/* The Read more link is a button, so remove the button look */
+.more { background: none; border: 0; padding: 0; font: inherit; font-weight: 500; color: var(--teal); cursor: pointer; }
+
+/* ---- Expanded card details ---- */
+.card-details { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 12px; animation: reveal-card-details 0.2s ease-out; }
+.card-details section { display: grid; gap: 3px; }
+.card-details h4 { margin: 0; color: var(--ocean); font-size: 14px; }
+.card-details p { margin: 0; color: var(--muted); font-size: 13px; }
+@keyframes reveal-card-details {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Sector tiles ---- */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 10px; }
+.tile {
+  text-align: left; background: var(--card); color: inherit; font: inherit; cursor: pointer;
+  border: 1px solid var(--line); border-left: 5px solid var(--c); border-radius: 12px; padding: 12px 16px;
+}
+.tile small { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.tile b { font-family: var(--font-serif), Georgia, serif; font-size: 28px; font-weight: 600; color: var(--c); }
+.tile[aria-pressed="true"] { outline: 2px solid var(--c); outline-offset: 1px; }
+.note { color: #625d54; font-size: 13px; margin: 0 0 18px; }
+
+/* ---- Search bar ---- */
+.bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 18px; }
+.search {
+  flex: 1 1 260px; max-width: 460px; padding: 11px 18px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit;
+}
+.count { margin-left: auto; color: #625d54; font-size: 13px; }
+.active-pills { display: flex; flex: 1 1 280px; flex-wrap: wrap; align-items: center; gap: 6px; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; background: var(--card); color: var(--ink); font: inherit; font-size: 12px; cursor: pointer; }
+.clear-inline { padding: 5px 8px; color: var(--teal); font-size: 12px; }
+
+/* ---- Filters + grid side by side ---- */
+.layout { display: grid; grid-template-columns: 270px 1fr; gap: 28px; align-items: start; }
+.filters {
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px;
+  position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto;
+}
+.filters summary { font-family: var(--font-serif), Georgia, serif; font-size: 18px; font-weight: 600; color: var(--ocean); cursor: pointer; }
+.filter-group h4 { margin: 16px 0 8px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.filter-group:first-of-type h4 { margin-top: 0; }
+.clear:disabled { opacity: 0.4; cursor: default; }
+.no-match { padding: 40px; text-align: center; color: var(--muted); }
+.no-match .clear { max-width: 200px; }
+
+/* Keyboard focus ring, so people using Tab can see where they are */
+.tile:focus-visible, .chip:focus-visible, .clear:focus-visible, .search:focus-visible, .more:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* On tablets and phones, the filters sit above the grid */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .filters { position: static; max-height: none; }
+  .count { margin-left: 0; }
+}
+
+/* ---- Tickable filter boxes (match the Figma design) ---- */
+.checks { display: grid; gap: 6px; }
+.check { display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer; }
+
+/* Draw our own box in place of the browser's default one */
+.check input {
+  appearance: none; flex: none; margin: 0; cursor: pointer;
+  width: 15px; height: 15px; border-radius: 4px;
+  border: 1.2px solid #cfc3aa; background: #fff;
+  display: grid; place-content: center;
+}
+.check input:checked { background: var(--teal); border-color: var(--teal); }
+.check input:checked::after { content: "✓"; color: #fff; font-size: 10px; font-weight: 700; line-height: 1; }
+.check input:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* ---- Banner ---- */
+.banner {
+  position: relative; overflow: hidden; border-radius: 20px;
+  min-height: 300px; margin-bottom: 26px;
+  display: flex; align-items: flex-end;
+}
+.banner-img { object-fit: cover; }
+/* The dark blue tint, so the white text is easy to read */
+.banner::after { content: ""; position: absolute; inset: 0; background: rgba(20, 66, 90, 0.52); }
+.banner-text { position: relative; z-index: 1; padding: 40px; }
+.banner h1, .banner .lede { color: #fff; }
+.banner .lede { margin: 8px 0 0; }
+.banner-credit { position: absolute; z-index: 1; right: 16px; bottom: 10px; font-size: 11px; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); }
+
+/* On phones, the open filter list scrolls inside itself */
+@media (max-width: 860px) {
+  .filters[open] { max-height: 60vh; overflow: auto; }
+}
