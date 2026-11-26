@@ -53,8 +53,25 @@ export function uniqueValues(options: AdaptationOption[], key: GroupKey): string
 export function matchesFilters(option: AdaptationOption, selected: Selected): boolean {
   return GROUPS.every(({ key }) => {
     const ticked = selected[key];
-    if (ticked.length === 0) return true; // nothing ticked, so no restriction
-    return valuesOf(option, key).some((v) => ticked.includes(v));
+
+    if (ticked.length === 0) return true;
+
+    const values = valuesOf(option, key);
+
+    // Values that apply everywhere.
+    if (key === "ecosystems" && values.includes("All ecosystem types")) {
+      return true;
+    }
+
+    if (key === "hazards" && values.includes("Cross-hazard (enabling)")) {
+      return true;
+    }
+
+    if (key === "valueChainStages" && values.includes("Cross-cutting")) {
+      return true;
+    }
+
+    return values.some((value) => ticked.includes(value));
   });
 }
 
