@@ -9,6 +9,7 @@ import {
   type GroupKey, type Selected, type SectorFilter,
 } from "@/lib/filters";
 import OptionCard from "./OptionCard";
+import OptionModal from "./OptionModal";
 
 // The row of tiles at the top, with the colours from the design.
 const TILES: { value: SectorFilter; label: string; colour: string }[] = [
@@ -24,7 +25,7 @@ export default function Catalog({ options }: { options: AdaptationOption[] }) {
   const [sector, setSector] = useState<SectorFilter>("all");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Selected>(emptySelected());
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [openId, setOpenId] = useState<string | null>(null);
 
   // Whether the filter list is unfolded. On a phone we start with it folded away.
   const [filtersOpen, setFiltersOpen] = useState(true);
@@ -76,22 +77,15 @@ export default function Catalog({ options }: { options: AdaptationOption[] }) {
     }));
   }
 
-  // Open or close one card while leaving all other cards unchanged.
-  function toggleExpanded(id: string) {
-    setExpandedIds((previous) => {
-      const next = new Set(previous);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-
   function clearAll() {
     setSector("all");
     setQuery("");
     setSelected(emptySelected());
-    setExpandedIds(new Set());
+    setOpenId(null);
   }
+
+  const openIndex = openId === null ? -1 : visible.findIndex((option) => option.id === openId);
+  const openOption = openIndex >= 0 ? visible[openIndex] : null;
 
   // These labels make the active controls clear and easy to remove.
   const activePills = [
@@ -201,8 +195,7 @@ export default function Catalog({ options }: { options: AdaptationOption[] }) {
               <OptionCard
                 key={option.id}
                 option={option}
-                expanded={expandedIds.has(option.id)}
-                onToggle={() => toggleExpanded(option.id)}
+                onOpen={() => setOpenId(option.id)}
               />
             ))}
           </div>
@@ -216,6 +209,14 @@ export default function Catalog({ options }: { options: AdaptationOption[] }) {
         )}
       </div>
 
+      {openOption && (
+        <OptionModal
+          option={openOption}
+          onClose={() => setOpenId(null)}
+          onPrev={() => setOpenId(visible[(openIndex - 1 + visible.length) % visible.length].id)}
+          onNext={() => setOpenId(visible[(openIndex + 1) % visible.length].id)}
+        />
+      )}
     </>
   );
 }
