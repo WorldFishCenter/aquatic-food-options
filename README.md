@@ -18,8 +18,7 @@ The public interface includes:
 - Tick-box filters for climate hazard, sub-category, value-chain stage, and
   ecosystem type.
 - Removable active-filter chips.
-- Inline card expansion. Multiple cards can stay open at the same time for
-  comparison.
+- Option details in a popup with previous/next navigation.
 - Local photos stored in `public/photos`.
 
 The current Airtable table contains approximately 47 records. The code fetches
@@ -208,10 +207,10 @@ These are displayed only when they contain text:
 - `Intervention in practice`
 - `References`
 
-The current inline card design specifically displays the long description and
-the first three optional sections during expansion. The mapper also preserves
-the other optional fields so the display can be extended later without
-changing the Airtable fetch.
+The popup displays the long description and the optional sections currently
+enabled in `src/components/OptionModal.tsx`. The mapper also preserves other
+optional fields so the display can be extended later without changing the
+Airtable fetch.
 
 ### Fields intentionally not displayed
 
@@ -573,3 +572,31 @@ npm run build
 
 Review the changed files, confirm that no secrets are included, and open a
 pull request for review.
+
+
+Most visual changes belong in `src/app/globals.css`. Keep the existing class
+names where possible because the card, filter, and responsive layouts share
+those styles across components.
+
+## Deployment & handover notes
+
+### Current status
+
+- **Implemented:** Core Next.js interface, Airtable server-side integration,
+  sector metric cards, multi-group sidebar filters, search, popup-based option
+  details, and sub-category fallback images.
+- **Pending:** Final Airtable text descriptions (`Short Description (draft)` and
+  `Long Description`), any additional title-specific photos in `public/photos`,
+  and final deployment on WorldFish's official hosting.
+
+### Deploying to Netlify or Vercel
+
+1. Connect this GitHub repository to your hosting provider (Netlify or Vercel).
+2. Add the three required environment variables in the host's dashboard:
+   - `AIRTABLE_TOKEN`
+   - `AIRTABLE_BASE_ID`
+   - `AIRTABLE_TABLE`
+3. Use `npm run build` as the build command.
+4. Note: Because `src/app/page.tsx` fetches Airtable data on the server, check
+   whether your deployment caches the page at build time (requiring a redeploy
+   when Airtable records change) or renders dynamically per request.
